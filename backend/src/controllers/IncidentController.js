@@ -22,6 +22,14 @@ module.exports = {
 
     return response.json(incidents);
   },
+  async indexAll(request, response) {
+    const [count] = await connection("incidents").count();
+
+    const incidents = await connection("incidents").select("*");
+    response.header("X-Total-Count", count["count(*)"]);
+
+    return response.json(incidents);
+  },
 
   async create(request, response) {
     const { title, description, value } = request.body;
